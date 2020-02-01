@@ -1,0 +1,43 @@
+<h1>Alta de Disco</h1>
+<form [formGroup]="altaDiscoForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="artista">Artista</label>
+    <input type="text" class="form-control" id="artista" placeholder="Nombre del Artista" formControlName="artistName">
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="submitted && getFormFields.artistName.errors">
+    El nombre del artista es obligatorio.
+  </div>
+  <div class="form-group">
+    <label for="disco">Disco</label>
+    <input type="text" class="form-control" id="disco" placeholder="Titulo del disco" formControlName="titleAlbum">
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="submitted && getFormFields.titleAlbum.errors">
+    El nombre del disco es obligatorio.
+  </div>
+
+  <h6>Listado de Canciones</h6>
+  <div formArrayName="songsName">
+    <div *ngFor="let formInput of getSongsFormFields.controls; let pointIndex=index" [formGroupName]="pointIndex">
+      <div class="form-group" class="form-inline">
+        <input type="text" class="form-control m-1" formControlName="songName" placeholder="Nombre de la Canción {{ pointIndex + 1}}">
+        <button class="btn btn-secondary" (click)="removeSongField(pointIndex)">Borrar</button>
+      </div>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="addSongField()">Añadir Canción</button>
+  </div>
+
+  <div class="form-group mt-3">
+    <label for="fechaPublicacion">Publicación</label>
+    <input type="text" class="form-control" id="fechaPublicacion" placeholder="Fecha de Publicación"
+      formControlName="datePublished">
+  </div>
+  <div class="form-group">
+    <label for="resumen">Resumen</label>
+    <textarea class="form-control" id="resumen" rows="3" formControlName="ressumeForm"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="info">Info</label>
+    <textarea class="form-control" id="info" rows="10" formControlName="infoForm"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Guardar</button>
+</form>

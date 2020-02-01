@@ -1,0 +1,60 @@
+<h1>Buscar Disco</h1>
+<hr>
+<form>
+    <div class="form-row">
+      <div class="col">
+        <label for="artista" class="sr-only">Artista</label>
+        <input [(ngModel)]="strArtista" type="text" class="form-control" id="artista" placeholder="artista" name="strArtista">
+      </div>
+      <div class="col">
+          <label for="album" class="sr-only">album</label>
+          <input [(ngModel)]="strAlbum" type="text" class="form-control" id="album" placeholder="album" name="strAlbum">
+      </div>
+      <div class="col">
+          <button type="submit" class="btn btn-primary mb-2" (click)="sendValues()">Buscar</button>
+      </div>
+    </div>
+    <div *ngIf="message" class="form-row">
+        <div class="alert alert-danger" role="alert">
+          {{ message }}
+        </div>
+    </div>
+    <hr>
+    <div *ngIf="album">
+    <h2>{{ album.title }}</h2>
+      <div class="col">
+        <div class="row">
+          <div class="col">
+            <div class="row">
+              <label for="artista" class="sr-only">Artista</label>
+              <input [(ngModel)]="album.artist" type="text" class="form-control" id="artistName" name="artistName">  
+            </div>
+            <div class="row mt-2">
+               <ul>
+                 <li *ngFor="let song of album.songs"> {{song}} </li>
+               </ul>
+            </div>
+            <div class="row mt-2">
+              <p class="text-left">{{ album.published }}</p>
+            </div>
+          </div>
+          <div class="col">
+              <img [src]="album.image">
+          </div>
+          <div class="row">
+              <div class="row mt-2">
+                  <p class="text-justify" [innerHTML]>{{ album.summary }}></p>
+               </div>
+            </div>
+          <div class="row">
+            <div class="row mt-2">
+                <p class="text-justify">{{ album.content }}></p>
+             </div>
+          </div>
+          <div class="row">
+            <button type="button" class="btn btn-primary" (click)="saveAlbum()">Añadir a mi Discoteca</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>

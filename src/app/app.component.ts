@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AlbumService } from './servicios/album.service';
+import { ApidiscotecaService } from './servicios/apidiscoteca.service';
+import { Album } from './models/album';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
   title = 'app';
+
+  constructor() {
+  }
+
+  ngOnInit() {
+  }
+  
+  
 }
