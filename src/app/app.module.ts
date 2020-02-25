@@ -12,13 +12,19 @@ import { routing } from './app.routing';
 import { BuscadiscoapiComponent } from './buscadiscoapi/buscadiscoapi.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MidiscotecaComponent } from './midiscoteca/midiscoteca.component';
+import { NoimagePipe } from './pipes/noimage.pipe';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AltadiscoComponent,
     BuscadiscoapiComponent,
-    NavbarComponent
+    NavbarComponent,
+    MidiscotecaComponent,
+    NoimagePipe,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

@@ -1,19 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { Album } from '../models/album';
-import { FormControl,FormBuilder,FormGroup,Validators, FormArray } from '@angular/forms';
+import { FormBuilder,FormGroup,Validators, FormArray } from '@angular/forms';
+import { ApidiscotecaService } from '../servicios/apidiscoteca.service';
 
 @Component({
   selector: 'app-altadisco',
   templateUrl: './altadisco.component.html',
   styleUrls: ['./altadisco.component.css']
 })
+
 export class AltadiscoComponent implements OnInit {
 
   album: Album;
   altaDiscoForm: FormGroup;
   submitted:boolean;
+  fileData: File;
+  previewUrl:any;
+  messageUpload:string;
+  messageCreatedAlbum:string;
   
-  constructor(private formBuilder:FormBuilder) { 
+  constructor(private formBuilder:FormBuilder,protected apiDiscotecaService:ApidiscotecaService) { 
     this.album = new Album();
   }
 
@@ -24,6 +30,7 @@ export class AltadiscoComponent implements OnInit {
       titleAlbum : ['',Validators.required],
       datePublished : [''],
       ressumeForm : [''],
+      albumImage : [''],
       infoForm : [''],
       songsName : this.formBuilder.array([
         this.formBuilder.group({
@@ -76,20 +83,50 @@ export class AltadiscoComponent implements OnInit {
     this.album.summary = this.altaDiscoForm.value['ressumeForm'];
     this.album.content = this.altaDiscoForm.value['infoForm'];
     this.album.songs = this.getSongs(this.altaDiscoForm.value['songsName']);
+    // console.log(this.altaDiscoForm.value['albumImage']);
 
-    console.log(this.album.songs);
-    
-    /*
-    console.log(
-      'artist => ' + this.album.artist +
-      'title => ' + this.album.title +
-      'published => ' + this.album.published +
-      'summary => ' + this.album.summary +
-      'content => ' + this.album.content + 
-      'songs => ' + this.album.songs
+    this.apiDiscotecaService.postAlbum(this.album).subscribe(
+      data => {
+        console.log(data);
+        this.messageCreatedAlbum = data.message;
+      },
+      Error => {
+        console.log(Error);
+      }
     );
-    */
-    
   }
 
+  fileProgress(fileInput: any) {
+    this.fileData = <File>fileInput.target.files[0];
+    this.preview();
+  }
+
+  preview() {
+    var mimeType = this.fileData.type;
+    if (mimeType.match(/image\/*/) == null) {
+      return;
+    }
+ 
+    var reader = new FileReader();      
+    reader.readAsDataURL(this.fileData); 
+    reader.onload = (_event) => { 
+      this.previewUrl = reader.result; 
+    }
+  }
+
+  uploadImage() {
+    const formData = new FormData();
+    formData.append('image', this.fileData);
+
+    this.apiDiscotecaService.postImage(formData).subscribe (
+      (res) => {
+        console.log(res);
+        this.messageUpload = res.message;
+        this.album.image = res.url;
+      },
+      (err) => {  
+        console.log(err);
+      }
+    );
+  }
 }

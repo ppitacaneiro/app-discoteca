@@ -3,12 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Album } from '../models/album';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ApidiscotecaService {
 
   urlApi : string = 'http://localhost:8080/api_discoteca/album/';
   postApi : string = 'create.php';
+  postAlbumApi : string = 'imageupload.php';
+  getAlbumsApi : string = 'read.php';
 
   constructor(protected http:HttpClient) { }
 
@@ -31,6 +34,20 @@ export class ApidiscotecaService {
     }, this.httpOptions);
   }
 
+  postImage(data) {
+    return this.http.post<any>(this.urlApi + this.postAlbumApi, data);
+  }
+
+
+  getAlbums() {
+    return this.http.get(this.urlApi + this.getAlbumsApi)
+      .pipe( map( data => {
+        return data['albums'];
+      }));
+  }
+
+
+  
 }
 
 
